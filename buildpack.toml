@@ -1,0 +1,20 @@
+[buildpack]
+name = "OCaml"
+
+  [publish.Ignore]
+  files = [
+      ".circleci/",
+      ".github/",
+      ".git2gus/",
+      "etc/",
+      "spec/",
+      "test/",
+      "makefile",
+      "Gemfile.lock",
+      "Gemfile",
+      "hatchet.json",
+      "go.mod",
+      "go.sum",
+      "hatchet.lock",
+      "cmd/",
+  ]
