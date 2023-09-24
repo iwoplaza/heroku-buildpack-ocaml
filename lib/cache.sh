@@ -49,6 +49,17 @@ restore_default_cache_directories() {
   local cache_dir=${2:-}
   local npm_cache=${3:-}
 
+  # _esy
+  if [[ -e "$build_dir/_esy" ]]; then
+    echo "- _esy is checked into source control and cannot be cached"
+  elif [[ -e "$cache_dir/node/cache/_esy" ]]; then
+    echo "- _esy"
+    mkdir -p "$(dirname "$build_dir/_esy")"
+    mv "$cache_dir/node/cache/_esy" "$build_dir/_esy"
+  else
+    echo "- _esy (not cached - skipping)"
+  fi
+
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
     if [[ -d "$cache_dir/node/cache/npm" ]]; then
       rm -rf "$npm_cache"
@@ -107,6 +118,17 @@ save_default_cache_directories() {
   local build_dir=${1:-}
   local cache_dir=${2:-}
   local npm_cache=${4:-}
+
+  # _esy
+  if [[ -e "$build_dir/_esy" ]]; then
+    echo "- _esy"
+    mkdir -p "$cache_dir/node/cache/_esy"
+    cp -a "$build_dir/_esy" "$(dirname "$cache_dir/node/cache/_esy")"
+  else
+    # this can happen if there are no dependencies
+    mcount "cache.no-underscore-esy"
+    echo "- _esy (nothing to cache)"
+  fi
 
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
     if [[ -d "$npm_cache" ]]; then
