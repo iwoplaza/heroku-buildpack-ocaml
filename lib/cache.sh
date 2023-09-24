@@ -47,8 +47,7 @@ get_cache_directories() {
 restore_default_cache_directories() {
   local build_dir=${1:-}
   local cache_dir=${2:-}
-  local yarn_cache_dir=${3:-}
-  local npm_cache=${4:-}
+  local npm_cache=${3:-}
 
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
     if [[ -d "$cache_dir/node/cache/npm" ]]; then
@@ -70,11 +69,6 @@ restore_default_cache_directories() {
     else
       echo "- node_modules (not cached - skipping)"
     fi
-  fi
-
-  # bower_components, should be silent if it is not in the cache
-  if [[ -e "$cache_dir/node/cache/bower_components" ]]; then
-    echo "- bower_components"
   fi
 }
 
@@ -112,7 +106,6 @@ clear_cache() {
 save_default_cache_directories() {
   local build_dir=${1:-}
   local cache_dir=${2:-}
-  local yarn_cache_dir=${3:-}
   local npm_cache=${4:-}
 
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
@@ -133,15 +126,6 @@ save_default_cache_directories() {
       mcount "cache.no-node-modules"
       echo "- node_modules (nothing to cache)"
     fi
-  fi
-
-  # bower_components
-  if [[ -e "$build_dir/bower_components" ]]; then
-    mcount "cache.saved-bower-components"
-    meta_set "cached-bower-components" "true"
-    echo "- bower_components"
-    mkdir -p "$cache_dir/node/cache/bower_components"
-    cp -a "$build_dir/bower_components" "$(dirname "$cache_dir/node/cache/bower_components")"
   fi
 
   meta_set "node-custom-cache-dirs" "false"

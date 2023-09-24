@@ -41,7 +41,7 @@ run_build_if_present() {
 
   if [[ "$has_script_name" == "true" ]]; then
     echo "Running $script_name"
-    monitor "${script_name}-script" esy run-script "$script_name" --if-present
+    monitor "${script_name}-script" esy run-script "$script_name"
   fi
 }
 
