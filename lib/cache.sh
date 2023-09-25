@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 create_signature() {
-  echo "v2; ${STACK}; $(node --version); $(npm --version); $(yarn --version 2>/dev/null || true); ${PREBUILD}"
+  echo "v2; ${STACK}; $(node --version); $(npm --version);"
 }
 
 save_signature() {
@@ -58,6 +58,15 @@ restore_default_cache_directories() {
     mv "$cache_dir/node/cache/_esy" "$build_dir/_esy"
   else
     echo "- _esy (not cached - skipping)"
+  fi
+
+  # ~/.esy
+  if [[ -e "$cache_dir/node/cache/esy_cache" ]]; then
+    echo "- ~/.esy"
+    mkdir -p "$(dirname "~/.esy")"
+    mv "$cache_dir/node/cache/esy_cache" "~/.esy"
+  else
+    echo "- ~/.esy (not cached - skipping)"
   fi
 
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
@@ -125,9 +134,18 @@ save_default_cache_directories() {
     mkdir -p "$cache_dir/node/cache/_esy"
     cp -a "$build_dir/_esy" "$(dirname "$cache_dir/node/cache/_esy")"
   else
-    # this can happen if there are no dependencies
     mcount "cache.no-underscore-esy"
     echo "- _esy (nothing to cache)"
+  fi
+
+  # .env cache
+  if [[ -e "~/.esy" ]]; then
+    echo "- ~/.esy"
+    mkdir -p "$cache_dir/node/cache/esy_cache"
+    cp -a "~/.esy" "$(dirname "$cache_dir/node/cache/esy_cache")"
+  else
+    mcount "cache.no-dot-esy"
+    echo "- ~/.esy (nothing to cache)"
   fi
 
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
