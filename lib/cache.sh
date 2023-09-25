@@ -128,6 +128,9 @@ save_default_cache_directories() {
   local cache_dir=${2:-}
   local npm_cache=${4:-}
 
+  echo "- ls \"$cache_dir/node/cache\""
+  ls "$cache_dir/node/cache"
+
   # _esy
   if [[ -e "$build_dir/_esy" ]]; then
     echo "- _esy"
