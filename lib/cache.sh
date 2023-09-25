@@ -138,7 +138,7 @@ save_default_cache_directories() {
     echo "- _esy (nothing to cache)"
   fi
 
-  # .env cache
+  # env_cache
   if [[ -e "$build_dir/_esy_cache" ]]; then
     echo "- _esy_cache"
     mkdir -p "$cache_dir/node/cache/_esy_cache"
