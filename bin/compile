@@ -272,11 +272,20 @@ prune_devdependencies() {
   npm_prune_devdependencies "$BUILD_DIR"
 }
 
+prune_esycache() {
+  npm_prune_esy_cache "$BUILD_DIR"
+}
+
 meta_set "build-step" "save-cache"
 cache_build | output "$LOG_FILE"
+
 meta_set "build-step" "prune-dependencies"
 header "Pruning devDependencies" | output "$LOG_FILE"
 prune_devdependencies | output "$LOG_FILE"
+
+meta_set "build-step" "prune-esy-cache"
+header "Pruning esy cache" | output "$LOG_FILE"
+prune_esycache | output "$LOG_FILE"
 
 meta_set "build-step" "cleanup-script"
 run_cleanup_script "$BUILD_DIR" | output "$LOG_FILE"

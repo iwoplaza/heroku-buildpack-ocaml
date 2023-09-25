@@ -144,7 +144,7 @@ save_default_cache_directories() {
     mkdir -p "$cache_dir/node/cache/_esy_cache"
     cp -a "$build_dir/_esy_cache" "$(dirname "$cache_dir/node/cache/_esy_cache")"
   else
-    mcount "cache.no-dot-esy"
+    mcount "cache.no-esy-cache"
     echo "- _esy_cache (nothing to cache)"
   fi
 

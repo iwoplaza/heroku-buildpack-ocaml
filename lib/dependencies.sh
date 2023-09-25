@@ -183,3 +183,9 @@ npm_prune_devdependencies() {
     meta_set "skipped-prune" "false"
   fi
 }
+
+npm_prune_esy_cache() {
+  local build_dir=${1:-}
+
+  monitor "esy-cache-prune" rm -rf "$build_dir/_esy_cache"
+}
