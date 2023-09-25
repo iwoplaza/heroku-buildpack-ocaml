@@ -142,16 +142,19 @@ export VENDOR_PATH
 export NPM_CONFIG_CACHE
 
 install_bins() {
-  local node_engine npm_engine yarn_engine npm_version node_version
+  local node_engine npm_engine pnpm_engine npm_version node_version
 
   node_engine=$(read_json "$BUILD_DIR/esy.json" ".engines.node")
   npm_engine=$(read_json "$BUILD_DIR/esy.json" ".engines.npm")
+  pnpm_engine=$(read_json "$BUILD_DIR/esy.json" ".engines.pnpm")
 
   meta_set "node-version-request" "$node_engine"
   meta_set "npm-version-request" "$npm_engine"
+  meta_set "pnpm-version-request" "$pnpm_engine"
 
   echo "engines.node (esy.json):  ${node_engine:-unspecified}"
   echo "engines.npm (esy.json):   ${npm_engine:-unspecified (use default)}"
+  echo "engines.pnpm (esy.json):   ${pnpm_engine:-unspecified (use default)}"
   echo ""
 
   warn_node_engine "$node_engine"
@@ -162,12 +165,18 @@ install_bins() {
   meta_set "build-step" "install-npm"
   monitor "install-npm-binary" install_npm "$npm_engine" "$BUILD_DIR/.heroku/node" $NPM_LOCK
 
+  meta_set "build-step" "install-pnpm"
+  monitor "install-pnpm-binary" install_pnpm "$pnpm_engine"
+
   node_version="$(node --version)"
   mcount "version.node.$node_version"
   meta_set "node-version" "$node_version"
 
   mcount "version.npm.$(npm --version)"
   meta_set "npm-version" "$(npm --version)"
+
+  mcount "version.pnpm.$(pnpm --version)"
+  meta_set "pnpm-version" "$(pnpm --version)"
 
   warn_old_npm
 }

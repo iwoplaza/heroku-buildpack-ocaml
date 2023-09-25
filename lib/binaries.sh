@@ -133,3 +133,8 @@ install_npm() {
     echo "npm $(npm --version) installed"
   fi
 }
+
+install_pnpm() {
+  local version="$1"
+  code="$(npm install -g pnpm@$version)"
+}
