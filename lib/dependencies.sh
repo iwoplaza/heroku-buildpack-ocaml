@@ -107,13 +107,9 @@ npm_node_modules() {
     cd "$build_dir" || return
 
     meta_set "use-npm-ci" "false"
-    if [ -e "$build_dir/package-lock.json" ]; then
-      echo "Installing esy dependencies"
-    elif [ -e "$build_dir/npm-shrinkwrap.json" ]; then
-      echo "Installing node modules (package.json + shrinkwrap)"
-    else
-      echo "Installing node modules (package.json)"
-    fi
+    echo "Installing esy packages (esy.json)"
+
+    ESY__PREFIX="$(pwd)/_esy_cache"
     monitor "install-esy" npm install -g esy 2>&1
     monitor "install-deps" esy install 2>&1
   else
