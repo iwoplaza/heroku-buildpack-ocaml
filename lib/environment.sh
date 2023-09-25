@@ -19,10 +19,13 @@ get_platform() {
 }
 
 create_default_env() {
+  local build_dir="$1"
+
   export NPM_CONFIG_LOGLEVEL=${NPM_CONFIG_LOGLEVEL:-error}
   export NODE_MODULES_CACHE=${NODE_MODULES_CACHE:-true}
   export NODE_ENV=${NODE_ENV:-production}
   export NODE_VERBOSE=${NODE_VERBOSE:-false}
+  export ESY__PREFIX="$build_dir/_esy_cache"
 
   if [[ -n "$USE_NPM_INSTALL" ]]; then
     export USE_NPM_INSTALL=${USE_NPM_INSTALL}
@@ -42,6 +45,7 @@ list_node_config() {
   printenv | grep ^NPM_CONFIG_ || true
   printenv | grep ^USE_NPM_ || true
   printenv | grep ^NODE_ || true
+  printenv | grep ^ESY_ || true
 
   if [ "$NPM_CONFIG_PRODUCTION" = "true" ] && [ "$NODE_ENV" != "production" ]; then
     echo ""

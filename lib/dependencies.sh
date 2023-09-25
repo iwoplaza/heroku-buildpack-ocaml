@@ -109,7 +109,6 @@ npm_node_modules() {
     meta_set "use-npm-ci" "false"
     echo "Installing esy packages (esy.json)"
 
-    ESY__PREFIX="$(pwd)/_esy_cache"
     monitor "install-esy" npm install -g esy 2>&1
     monitor "install-deps" esy install 2>&1
   else
