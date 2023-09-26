@@ -60,33 +60,25 @@ run_prebuild_script() {
 
 run_build_script() {
   local build_dir=${1:-}
-  local has_build_script has_heroku_build_script
+  local script_path = "$build_dir/heroku-build.sh"
 
-  has_build_script=$(has_script "$build_dir/esy.json" "build")
-  has_heroku_build_script=$(has_script "$build_dir/esy.json" "heroku-postbuild")
-  if [[ "$has_heroku_build_script" == "true" ]] && [[ "$has_build_script" == "true" ]]; then
-    echo "Detected both \"build\" and \"heroku-postbuild\" scripts"
-    mcount "scripts.heroku-postbuild-and-build"
-    run_if_present "$build_dir" 'heroku-postbuild'
-  elif [[ "$has_heroku_build_script" == "true" ]]; then
-    mcount "scripts.heroku-postbuild"
-    run_if_present "$build_dir" 'heroku-postbuild'
-  elif [[ "$has_build_script" == "true" ]]; then
-    mcount "scripts.build"
-    run_build_if_present "$build_dir" 'build'
+  if [[ -e "$script_path" ]]; then
+    header "Build"
+    echo "Running heroku-build.sh"
+    mcount "scripts.heroku-build"
+    bash "$script_path"
   fi
 }
 
 run_cleanup_script() {
   local build_dir=${1:-}
-  local has_heroku_cleanup_script
+  local script_path = "$build_dir/heroku-cleanup.sh"
 
-  has_heroku_cleanup_script=$(has_script "$build_dir/esy.json" "heroku-cleanup")
-
-  if [[ "$has_heroku_cleanup_script" == "true" ]]; then
-    mcount "script.heroku-cleanup"
+  if [[ -e "$script_path" ]]; then
     header "Cleanup"
-    run_if_present "$build_dir" 'heroku-cleanup'
+    echo "Running heroku-cleanup.sh"
+    mcount "script.heroku-cleanup"
+    bash "$script_path"
   fi
 }
 
@@ -109,7 +101,6 @@ npm_node_modules() {
     meta_set "use-npm-ci" "false"
     echo "Installing esy packages (esy.json)"
 
-    monitor "install-esy" npm install -g esy 2>&1
     monitor "install-deps" esy install 2>&1
   else
     echo "Skipping (no esy.json)"

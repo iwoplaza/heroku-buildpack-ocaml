@@ -138,3 +138,15 @@ install_pnpm() {
   local version="$1"
   code="$(npm install -g pnpm@$version)"
 }
+
+install_esy() {
+  local version="$1"
+
+  if [ "$version" == "" ]; then
+    echo "Using default esy version"
+    code="$(npm install -g esy)"
+  else
+    echo "Using requested esy version: $version"
+    code="$(npm install -g esy@$version)"
+  fi
+}

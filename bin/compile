@@ -147,14 +147,17 @@ install_bins() {
   node_engine=$(read_json "$BUILD_DIR/esy.json" ".engines.node")
   npm_engine=$(read_json "$BUILD_DIR/esy.json" ".engines.npm")
   pnpm_engine=$(read_json "$BUILD_DIR/esy.json" ".engines.pnpm")
+  esy_engine=$(read_json "$BUILD_DIR/esy.json" ".engines.esy")
 
   meta_set "node-version-request" "$node_engine"
-  meta_set "npm-version-request" "$npm_engine"
+  meta_set "npm-version-request"  "$npm_engine"
   meta_set "pnpm-version-request" "$pnpm_engine"
+  meta_set "esy-version-request"  "$esy_engine"
 
   echo "engines.node (esy.json):  ${node_engine:-unspecified}"
   echo "engines.npm (esy.json):   ${npm_engine:-unspecified (use default)}"
-  echo "engines.pnpm (esy.json):   ${pnpm_engine:-unspecified (use default)}"
+  echo "engines.pnpm (esy.json):  ${pnpm_engine:-unspecified (use default)}"
+  echo "engines.esy (esy.json):   ${esy_engine:-unspecified (use default)}"
   echo ""
 
   warn_node_engine "$node_engine"
@@ -167,6 +170,9 @@ install_bins() {
 
   meta_set "build-step" "install-pnpm"
   monitor "install-pnpm-binary" install_pnpm "$pnpm_engine"
+
+  meta_set "build-step" "install-esy"
+  monitor "install-esy-binary" install_esy "$esy_engine"
 
   node_version="$(node --version)"
   mcount "version.node.$node_version"
@@ -237,7 +243,6 @@ build_dependencies() {
   mtime "modules.time.cache.$cache_status" "${start}"
 
   meta_set "build-step" "build-script"
-  header "Build"
   run_build_script "$BUILD_DIR"
 }
 
