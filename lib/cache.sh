@@ -129,7 +129,7 @@ clear_cache() {
 save_default_cache_directories() {
   local build_dir=${1:-}
   local cache_dir=${2:-}
-  local npm_cache=${4:-}
+  local npm_cache=${3:-}
 
   # _esy
   if [[ -e "$build_dir/_esy" ]]; then
@@ -141,7 +141,7 @@ save_default_cache_directories() {
     echo "- _esy (nothing to cache)"
   fi
 
-  # env_cache
+  # esy_cache
   if [[ -e "$build_dir/_esy_cache" ]]; then
     echo "- _esy_cache"
     mkdir -p "$cache_dir/node/cache/_esy_cache"
@@ -150,6 +150,13 @@ save_default_cache_directories() {
     mcount "cache.no-esy-cache"
     echo "- _esy_cache (nothing to cache)"
   fi
+
+  echo "- ls \"$build_dir/_esy_cache\""
+  ls "$build_dir/_esy_cache"
+  echo "- ls \"$cache_dir/node/cache\""
+  ls "$cache_dir/node/cache"
+  echo "- ls \"$cache_dir/node/cache/_esy_cache\""
+  ls "$cache_dir/node/cache/_esy_cache"
 
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
     if [[ -d "$npm_cache" ]]; then

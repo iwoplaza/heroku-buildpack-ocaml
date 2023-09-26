@@ -60,7 +60,7 @@ run_prebuild_script() {
 
 run_build_script() {
   local build_dir=${1:-}
-  local script_path = "$build_dir/heroku-build.sh"
+  local script_path="$build_dir/heroku-build.sh"
 
   if [[ -e "$script_path" ]]; then
     header "Build"
@@ -72,7 +72,7 @@ run_build_script() {
 
 run_cleanup_script() {
   local build_dir=${1:-}
-  local script_path = "$build_dir/heroku-cleanup.sh"
+  local script_path="$build_dir/heroku-cleanup.sh"
 
   if [[ -e "$script_path" ]]; then
     header "Cleanup"
