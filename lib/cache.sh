@@ -49,6 +49,9 @@ restore_default_cache_directories() {
   local cache_dir=${2:-}
   local npm_cache=${3:-}
 
+  echo "- ls \"$cache_dir/node/cache\""
+  ls "$cache_dir/node/cache"
+
   # _esy
   if [[ -e "$build_dir/_esy" ]]; then
     echo "- _esy is checked into source control and cannot be cached"
@@ -127,9 +130,6 @@ save_default_cache_directories() {
   local build_dir=${1:-}
   local cache_dir=${2:-}
   local npm_cache=${4:-}
-
-  echo "- ls \"$cache_dir/node/cache\""
-  ls "$cache_dir/node/cache"
 
   # _esy
   if [[ -e "$build_dir/_esy" ]]; then
