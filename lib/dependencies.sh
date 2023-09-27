@@ -26,25 +26,6 @@ run_if_present() {
   fi
 }
 
-run_build_if_present() {
-  local build_dir=${1:-}
-  local script_name=${2:-}
-  local has_script_name
-  local script
-
-  has_script_name=$(has_script "$build_dir/esy.json" "$script_name")
-  script=$(read_json "$build_dir/esy.json" ".scripts[\"$script_name\"]")
-
-  if [[ "$script" == "ng build" ]]; then
-    warn "\"ng build\" detected as build script. We recommend you use \`ng build --prod\` or add \`--prod\` to your build flags. See https://devcenter.heroku.com/articles/nodejs-support#build-flags"
-  fi
-
-  if [[ "$has_script_name" == "true" ]]; then
-    echo "Running $script_name"
-    monitor "${script_name}-script" esy run-script "$script_name"
-  fi
-}
-
 run_prebuild_script() {
   local build_dir=${1:-}
   local has_heroku_prebuild_script
@@ -175,8 +156,8 @@ npm_prune_devdependencies() {
   fi
 }
 
-npm_prune_esy_cache() {
+prune_esy_store() {
   local build_dir=${1:-}
 
-  monitor "esy-cache-prune" rm -rf "$build_dir/_esy_cache"
+  monitor "esy-store-prune" rm -rf "$build_dir/_esystore"
 }

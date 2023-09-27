@@ -25,7 +25,7 @@ create_default_env() {
   export NODE_MODULES_CACHE=${NODE_MODULES_CACHE:-true}
   export NODE_ENV=${NODE_ENV:-production}
   export NODE_VERBOSE=${NODE_VERBOSE:-false}
-  export ESY__PREFIX="$build_dir/_esy_cache"
+  export ESY__PREFIX="$build_dir/_esystore"
 
   if [[ -n "$USE_NPM_INSTALL" ]]; then
     export USE_NPM_INSTALL=${USE_NPM_INSTALL}

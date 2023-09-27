@@ -63,13 +63,13 @@ restore_default_cache_directories() {
     echo "- _esy (not cached - skipping)"
   fi
 
-  # _esy_cache
-  if [[ -e "$cache_dir/node/cache/_esy_cache" ]]; then
-    echo "- _esy_cache"
-    mkdir -p "$(dirname "$build_dir/_esy_cache")"
-    mv "$cache_dir/node/cache/_esy_cache" "$build_dir/_esy_cache"
+  # _esystore
+  if [[ -e "$cache_dir/node/cache/_esystore" ]]; then
+    echo "- _esystore"
+    mkdir -p "$(dirname "$build_dir/_esystore")"
+    mv "$cache_dir/node/cache/_esystore" "$build_dir/_esystore"
   else
-    echo "- _esy_cache (not cached - skipping)"
+    echo "- _esystore (not cached - skipping)"
   fi
 
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
@@ -141,22 +141,22 @@ save_default_cache_directories() {
     echo "- _esy (nothing to cache)"
   fi
 
-  # esy_cache
-  if [[ -e "$build_dir/_esy_cache" ]]; then
-    echo "- _esy_cache"
-    mkdir -p "$cache_dir/node/cache/_esy_cache"
-    cp -a "$build_dir/_esy_cache" "$(dirname "$cache_dir/node/cache/_esy_cache")"
+  # _esystore
+  if [[ -e "$build_dir/_esystore" ]]; then
+    echo "- _esystore"
+    mkdir -p "$cache_dir/node/cache/_esystore"
+    cp -a "$build_dir/_esystore" "$(dirname "$cache_dir/node/cache/_esystore")"
   else
-    mcount "cache.no-esy-cache"
-    echo "- _esy_cache (nothing to cache)"
+    mcount "cache.no-esy-store"
+    echo "- _esystore (nothing to cache)"
   fi
 
-  echo "- ls \"$build_dir/_esy_cache\""
-  ls "$build_dir/_esy_cache"
+  echo "- ls \"$build_dir/_esystore\""
+  ls "$build_dir/_esystore"
   echo "- ls \"$cache_dir/node/cache\""
   ls "$cache_dir/node/cache"
-  echo "- ls \"$cache_dir/node/cache/_esy_cache\""
-  ls "$cache_dir/node/cache/_esy_cache"
+  echo "- ls \"$cache_dir/node/cache/_esystore\""
+  ls "$cache_dir/node/cache/_esystore"
 
   if [[ "$USE_NPM_INSTALL" == "false" ]]; then
     if [[ -d "$npm_cache" ]]; then
